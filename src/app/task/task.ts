@@ -47,7 +47,7 @@ export class Task {
   save() {
     if(this.form.valid) {
       const taskData = this.getFormData();
-      this.todoService.AddTask(taskData);
+      this.todoService.addTask(taskData);
 
       const modalElement = document.getElementById('addTaskModal');
       if (modalElement) {

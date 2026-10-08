@@ -1,0 +1,12 @@
+.task-table {
+    min-width: 800px;
+    table-layout: fixed;
+}
+
+.task-col {
+    width: 20%;
+}
+
+.description-col {
+    width: 40%;
+}
