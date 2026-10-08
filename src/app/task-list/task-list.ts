@@ -1,6 +1,5 @@
 import { Component, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { Todo } from '../service/todo.service';
 import { TaskModel } from '../task/task.model';
 import { Task } from '../task/task';
 import { TodoWebApi } from '../service/todoWebApi.service';
@@ -19,7 +18,7 @@ export class TaskList {
   tasks = signal<TaskModel[]>([]);
   errorMessage: string = '';
 
-  constructor(private todoService: Todo, private todoWebApiService: TodoWebApi) { }
+  constructor(private todoWebApiService: TodoWebApi) { }
 
   ngOnInit() {
     this.loadTasks();

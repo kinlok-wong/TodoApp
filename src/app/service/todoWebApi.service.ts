@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import type { TaskModel } from '../task/task.model';
+import type { TaskModel, TaskResponse } from '../task/task.model';
+import type { BaseResponse } from '../shared/models/baseResponse';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
@@ -14,12 +15,12 @@ export class TodoWebApi {
 
     constructor(private http: HttpClient) {}
 
-    getTasks(): Observable<TaskModel[]> {
-        return this.http.get<TaskModel[]>(`${this.baseUrl}/GetAllTasks`, { headers: this.headers });
+    getTasks(): Observable<TaskResponse> {
+        return this.http.get<TaskResponse>(`${this.baseUrl}/GetAllTasks`, { headers: this.headers });
     }
 
-    addTask(task: TaskModel){
-        return this.http.post(`${this.baseUrl}/AddTask`, task, { headers: this.headers });
+    addTask(task: TaskModel): Observable<BaseResponse> {
+        return this.http.post<BaseResponse>(`${this.baseUrl}/AddTask`, task, { headers: this.headers });
     }
 
     deleteTask(taskId: number){
