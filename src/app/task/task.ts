@@ -6,6 +6,7 @@ import { TaskModel } from '../task/task.model';
 import { Todo } from '../service/todo.service';
 import { TaskPriority, TaskStatus } from '../enums';
 import { SelectListItem } from '../shared/models/selectListItem';
+import { IdService } from '../service/id.service';
 
 declare var bootstrap: any;
 
@@ -29,7 +30,7 @@ export class Task {
     text: value,
   }));
 
-  constructor(private fb: FormBuilder, private todoService: Todo) {
+  constructor(private fb: FormBuilder, private todoService: Todo, private idService: IdService) {
     this.form = new TaskForm(this.fb);
   }
 
@@ -54,8 +55,8 @@ export class Task {
         const modalInstance = bootstrap.Modal.getInstance(modalElement);
         modalInstance.hide();
       }
-
-      this.form.reset();}
+      this.form.reset();
+    }
     else {
       this.form.markAllAsTouched();
     }
@@ -69,7 +70,7 @@ export class Task {
     const data = this.form.getRawValue();
 
     return {
-      id: 0,
+      id: this.idService.getNextId(),
       task: data.task ?? '',
       description: data.description ?? '',
       priority: data.priority ?? 0,
