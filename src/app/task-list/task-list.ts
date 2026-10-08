@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Todo } from '../service/todo.service';
 import { TaskModel } from '../task/task.model';
-import { Task } from '../task/task'
+import { Task } from '../task/task';
+import { TodoWebApi } from '../service/todoWebApi.service';
 
 @Component({
   imports: [
@@ -17,15 +18,17 @@ export class TaskList {
 
   tasks: TaskModel[] = [];
 
-  constructor(private todoService: Todo) { }
+  constructor(private todoService: Todo, private todoWebApiService: TodoWebApi) { }
 
   ngOnInit() {
-    const tasks = this.todoService.getTasks();
-    this.tasks = tasks;
+    this.todoWebApiService.getTasks().subscribe(tasks => {
+      this.tasks = tasks;
+    });
   }
 
   deleteTask(taskId: number) {
-    this.todoService.deleteTask(taskId);
-    this.tasks = this.todoService.getTasks();
+    this.todoWebApiService.deleteTask(taskId).subscribe(() => {
+      this.tasks = this.tasks.filter(task => task.id !== taskId);
+    });
   }
 }

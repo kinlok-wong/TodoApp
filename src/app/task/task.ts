@@ -7,6 +7,7 @@ import { Todo } from '../service/todo.service';
 import { TaskPriority, TaskStatus } from '../enums';
 import { SelectListItem } from '../shared/models/selectListItem';
 import { IdService } from '../service/id.service';
+import { TodoWebApi } from '../service/todoWebApi.service';
 
 declare var bootstrap: any;
 
@@ -30,7 +31,7 @@ export class Task {
     text: value,
   }));
 
-  constructor(private fb: FormBuilder, private todoService: Todo, private idService: IdService) {
+  constructor(private fb: FormBuilder, private todoService: Todo, private idService: IdService, private todoWebApiService: TodoWebApi) {
     this.form = new TaskForm(this.fb);
   }
 
@@ -53,14 +54,14 @@ export class Task {
   save() {
     if(this.form.valid) {
       const taskData = this.getFormData();
-      this.todoService.addTask(taskData);
-
-      const modalElement = document.getElementById('addTaskModal');
-      if (modalElement) {
-        const modalInstance = bootstrap.Modal.getInstance(modalElement);
-        modalInstance.hide();
-      }
-      this.resetForm();
+      this.todoWebApiService.addTask(taskData).subscribe(() => {
+        const modalElement = document.getElementById('addTaskModal');
+        if (modalElement) {
+          const modalInstance = bootstrap.Modal.getInstance(modalElement);
+          modalInstance.hide();
+        }
+        this.resetForm();
+      });
     }
     else {
       this.form.markAllAsTouched();

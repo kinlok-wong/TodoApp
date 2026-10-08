@@ -9,4 +9,3 @@ export interface TaskModel {
     status: TaskStatus;
     dueDate: Date;
 }
-
