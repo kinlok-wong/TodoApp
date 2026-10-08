@@ -1,1 +1,2 @@
-This Todo list app is used to keep track on daily task.
+Installed Bootstrap 5 for layout and icons
+Installed ngx-spinner for loading spinner
