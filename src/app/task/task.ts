@@ -80,8 +80,8 @@ export class Task {
     } as TaskModel;
   }
 
-  private toDate(dateInput: string): Date {
-    const [year, month, day] = dateInput.split('-').map(Number);
+  private toDate(date: string): Date {
+    const [year, month, day] = date.split('-').map(Number);
     return new Date(year, month - 1, day);
   }
 }

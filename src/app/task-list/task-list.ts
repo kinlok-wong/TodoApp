@@ -24,10 +24,6 @@ export class TaskList {
     this.tasks = tasks;
   }
 
-  AddTask() {
-
-  }
-
   DeleteTask(taskId: number) {
     this.todoService.DeleteTask(taskId);
     this.tasks = this.todoService.GetTasks();
