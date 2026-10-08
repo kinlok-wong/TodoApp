@@ -1,0 +1,53 @@
+<div class="card">
+    <div class="card-body">
+        <form [formGroup]="form" (ngSubmit)="save()">
+            <input type="hidden" formControlName="id">
+            <div class="mb-3 form-group">
+                <label for="task" class="form-label">Task</label>
+                <input type="text" required formControlName="task" class="form-control" placeholder="Enter task name"
+                    [class.is-invalid]="form.controls.task.invalid && form.controls.task.touched" maxlength="50">
+                <div class="form-text text-end">
+                    {{ form.controls.task?.value?.length || 0}}/50
+                </div>
+                <div class="invalid-feedback">
+                    Task is required...
+                </div>
+            </div>
+            <div class="mb-3 form-group">
+                <label for="description" class="form-label">Description</label>
+                <textarea id="description" required formControlName="description" class="form-control" placeholder="Enter task description"
+                    [class.is-invalid]="form.controls.description.invalid && form.controls.description.touched" maxlength="200"></textarea>
+                <div class="form-text text-end">
+                    {{ form.controls.description?.value?.length || 0}}/200
+                </div>
+                <div class="invalid-feedback">
+                    Description is required...
+                </div>
+            </div>
+            <div class="mb-3 form-group">
+                <label for="priority" class="form-label">Priority</label>
+                <select id="priority" formControlName="priority" class="form-select">
+                    @for(priority of taskPriority; track priority.value) {
+                        <option value="{{ priority.value }}">{{ priority.text }}</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-3 form-group">
+                <label for="status" class="form-label">Status</label>
+                <select id="status" formControlName="status" class="form-select">
+                    @for(status of taskStatus; track status.value) {
+                        <option value="{{ status.value }}">{{ status.text }}</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-3 form-group">
+                <label for="dueDate" class="form-label">Due Date</label>
+                <input type="date" id="dueDate" formControlName="dueDate" class="form-control">
+            </div>
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary text-end">Save</button>
+                <button type="button" class="btn btn-secondary text-end ms-2" data-bs-dismiss="modal" (click)="cancel()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

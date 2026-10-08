@@ -1,0 +1,59 @@
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-6 text-end">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTaskModal"
+                (click)="AddTask()">Add Task</button>
+            </div>
+        </div>
+        <table class="table table-hover table-striped mt-3">
+            <thead>
+                <tr>
+                    <td>Task</td>
+                    <td>Description</td>
+                    <td>Priority</td>
+                    <td>Status</td>
+                    <td>Date</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                @if(tasks.length === 0) {
+                    <tr>
+                        <td colspan="6" class="text-center">No tasks available</td>
+                    </tr>
+                } 
+                @else {
+                    @for(task of tasks; track task.id) {
+                        <tr>
+                            <td>{{ task.task }}</td>
+                            <td>{{ task.description }}</td>
+                            <td>{{ task.priority }}</td>
+                            <td>{{ task.status }}</td>
+                            <td>{{ task.dueDate | date }}</td>
+                            <td>
+                                <button class="btn btn-danger" (click)="DeleteTask(task.id)">Delete</button>
+                            </td>
+                        </tr>        
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTaskModalLabel">Add Task</h5>
+            </div>
+            <div class="modal-body">
+                <app-task></app-task>
+            </div>
+        </div>
+    </div>
+</div>
