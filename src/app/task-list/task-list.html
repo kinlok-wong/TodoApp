@@ -34,7 +34,7 @@
                                 <td>{{ task.status }}</td>
                                 <td>{{ task.dueDate | date:'dd MMM yyyy' }}</td>
                                 <td class="text-end">
-                                    <button class="btn btn-danger" (click)="deleteTask(task.id)"><i class="bi bi-trash"></i> Delete</button>
+                                    <button class="btn btn-danger" (click)="onDeleteClick(task.id)"><i class="bi bi-trash"></i> Delete</button>
                                 </td>
                             </tr>
                         }
@@ -58,3 +58,5 @@
         </div>
     </div>
 </div>
+
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>

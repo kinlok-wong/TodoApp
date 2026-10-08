@@ -7,12 +7,15 @@ import { TaskPriority, TaskStatus } from '../enums';
 import { SelectListItem } from '../shared/models/selectListItem';
 import { IdService } from '../service/id.service';
 import { TodoWebApi } from '../service/todoWebApi.service';
+import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
+import { finalize } from 'rxjs';
 
 declare var bootstrap: any;
 
 @Component({
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxSpinnerModule
   ],
   selector: 'app-task',
   styleUrl: './task.css',
@@ -32,7 +35,9 @@ export class Task {
     text: value,
   }));
 
-  constructor(private fb: FormBuilder, private idService: IdService, private todoWebApiService: TodoWebApi) {
+  constructor(private fb: FormBuilder, private idService: IdService, private todoWebApiService: TodoWebApi,
+      private spinner: NgxSpinnerService
+  ) {
     this.form = new TaskForm(this.fb);
   }
 
@@ -56,7 +61,11 @@ export class Task {
     if(this.form.valid) {
       const taskData = this.getFormData();
       this.saveError = '';
-      this.todoWebApiService.addTask(taskData).subscribe({
+      this.spinner.show();
+
+      this.todoWebApiService.addTask(taskData).pipe(
+        finalize(() => this.spinner.hide())
+      ).subscribe({
         next: () => {
           const modalElement = document.getElementById('addTaskModal');
           if (modalElement) {
@@ -67,7 +76,7 @@ export class Task {
           this.taskSaved.emit();
         },
         error: error => {
-          this.saveError = error instanceof Error ? error.message : 'Unable to save the task.';
+          this.saveError = error.message || 'Unable to save the task.';
         },
       });
     }
