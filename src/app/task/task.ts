@@ -35,6 +35,11 @@ export class Task {
   }
 
   ngOnInit() {
+    this.resetForm();
+  }
+
+  private resetForm() {
+    this.form.reset();
     this.form.setData({
       id: 0,
       task: '',
@@ -55,7 +60,7 @@ export class Task {
         const modalInstance = bootstrap.Modal.getInstance(modalElement);
         modalInstance.hide();
       }
-      this.form.reset();
+      this.resetForm();
     }
     else {
       this.form.markAllAsTouched();
@@ -63,7 +68,7 @@ export class Task {
   }
 
   cancel() {
-    this.form.reset();
+    this.resetForm();
   }
 
   getFormData(): TaskModel{
