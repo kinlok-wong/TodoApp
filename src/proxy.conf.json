@@ -1,0 +1,7 @@
+{
+  "/TodoApp/**": {
+    "target": "http://localhost:5227",
+    "secure": false,
+    "changeOrigin": true
+  }
+}
