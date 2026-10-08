@@ -44,6 +44,11 @@
                 <label for="dueDate" class="form-label">Due Date</label>
                 <input type="date" id="dueDate" formControlName="dueDate" class="form-control">
             </div>
+            @if(saveError) {
+                <div class="alert alert-danger" role="alert">
+                    {{ saveError }}
+                </div>
+            }
             <div class="text-end">
                 <button type="submit" class="btn btn-primary text-end"><i class="bi bi-floppy"></i> Save</button>
                 <button type="button" class="btn btn-secondary text-end ms-2" data-bs-dismiss="modal" (click)="cancel()"><i class="bi bi-x-lg"></i> Cancel</button>
