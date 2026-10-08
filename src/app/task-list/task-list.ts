@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Todo } from '../service/todo.service';
 import { TaskModel } from '../task/task.model';
@@ -16,19 +16,34 @@ import { TodoWebApi } from '../service/todoWebApi.service';
 })
 export class TaskList {
 
-  tasks: TaskModel[] = [];
+  tasks = signal<TaskModel[]>([]);
+  errorMessage: string = '';
 
   constructor(private todoService: Todo, private todoWebApiService: TodoWebApi) { }
 
   ngOnInit() {
-    this.todoWebApiService.getTasks().subscribe(tasks => {
-      this.tasks = tasks;
+    this.loadTasks();
+  }
+
+  loadTasks() {
+    this.todoWebApiService.getTasks().subscribe({
+      next: response => {
+        if (response.success) {
+          this.tasks.set(response.tasks);
+          this.errorMessage = '';
+        } else {
+          this.errorMessage = response.message || 'Unable to load tasks.';
+        }
+      },
+      error: error => {
+        this.errorMessage = error.message || 'An error occurred while loading tasks.';
+      },
     });
   }
 
   deleteTask(taskId: number) {
     this.todoWebApiService.deleteTask(taskId).subscribe(() => {
-      this.tasks = this.tasks.filter(task => task.id !== taskId);
+      this.tasks.update(tasks => tasks.filter(task => task.id !== taskId));
     });
   }
 }

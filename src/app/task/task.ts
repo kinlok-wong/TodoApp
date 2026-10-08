@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, output } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
 import { TaskForm } from '../task/task.form';
@@ -22,6 +22,8 @@ declare var bootstrap: any;
 export class Task {
 
   form: TaskForm;
+  saveError: string = '';
+  taskSaved = output<void>();
   taskPriority: SelectListItem[] = Object.values(TaskPriority).map((value) => ({
     value,
     text: value,
@@ -54,13 +56,20 @@ export class Task {
   save() {
     if(this.form.valid) {
       const taskData = this.getFormData();
-      this.todoWebApiService.addTask(taskData).subscribe(() => {
-        const modalElement = document.getElementById('addTaskModal');
-        if (modalElement) {
-          const modalInstance = bootstrap.Modal.getInstance(modalElement);
-          modalInstance.hide();
-        }
-        this.resetForm();
+      this.saveError = '';
+      this.todoWebApiService.addTask(taskData).subscribe({
+        next: () => {
+          const modalElement = document.getElementById('addTaskModal');
+          if (modalElement) {
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            modalInstance?.hide();
+          }
+          this.resetForm();
+          this.taskSaved.emit();
+        },
+        error: error => {
+          this.saveError = error instanceof Error ? error.message : 'Unable to save the task.';
+        },
       });
     }
     else {
@@ -69,6 +78,7 @@ export class Task {
   }
 
   cancel() {
+    this.saveError = '';
     this.resetForm();
   }
 

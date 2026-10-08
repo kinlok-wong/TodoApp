@@ -9,3 +9,12 @@ export interface TaskModel {
     status: TaskStatus;
     dueDate: Date;
 }
+
+export interface TaskResponse extends BaseResponse {
+    tasks: TaskModel[];
+}
+
+export interface BaseResponse {
+    success: boolean;
+    message: string;
+}
