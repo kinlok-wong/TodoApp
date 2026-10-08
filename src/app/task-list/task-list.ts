@@ -20,12 +20,12 @@ export class TaskList {
   constructor(private todoService: Todo) { }
 
   ngOnInit() {
-    const tasks = this.todoService.GetTasks();
+    const tasks = this.todoService.getTasks();
     this.tasks = tasks;
   }
 
-  DeleteTask(taskId: number) {
-    this.todoService.DeleteTask(taskId);
-    this.tasks = this.todoService.GetTasks();
+  deleteTask(taskId: number) {
+    this.todoService.deleteTask(taskId);
+    this.tasks = this.todoService.getTasks();
   }
 }
